@@ -25,3 +25,178 @@ body {
     text-wrap: balance;
   }
 }
+
+input,
+select,
+button {
+  font-family: inherit;
+  font-size: 16px;
+}
+
+/* Header styles */
+#searchForm {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background-color: #ffffff;
+  border-bottom: 2px solid #ccc;
+}
+
+#searchForm img {
+  width: 50px;
+  height: 50px;
+}
+
+#searchForm .form-group {
+  display: flex;
+  flex-direction: column;
+  margin-right: 15px;
+}
+
+#searchForm input,
+#searchForm select {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-top: 5px;
+}
+
+#searchButton {
+  padding: 10px 15px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#searchButton:hover {
+  background-color: #218838;
+}
+
+/* Recent searches form */
+#recentForm {
+  margin-top: 20px;
+  padding: 10px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+}
+
+#recentForm h2 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+
+#recentSearches {
+  padding: 10px;
+  background-color: #ffffff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* SideBar and CRUD section styles */
+#crud {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-top: 20px;
+}
+
+#crud h2 {
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+}
+
+.sectionagregar {
+  padding: 20px;
+  background-color: #f4f4f4;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+
+.sectionagregar .form-group {
+  margin-bottom: 15px;
+}
+
+.sectionagregar label {
+  font-weight: bold;
+  margin-bottom: 5px;
+  display: block;
+}
+
+.sectionagregar input,
+.sectionagregar select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-top: 5px;
+}
+
+.vbutton {
+  background-color: #007bff;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.vbutton:hover {
+  background-color: #0056b3;
+}
+
+#addButton {
+  padding: 10px 15px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#addButton:hover {
+  background-color: #218838;
+}
+
+/* Table styling */
+#bookTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+#bookTable th,
+#bookTable td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+#bookTable th {
+  background-color: #4caf50;
+  color: white;
+}
+
+/* Action buttons (Edit, Delete, PDF) */
+button.edit {
+  background-color: #007bff;
+  padding: 5px;
+}
+
+button.delete {
+  background-color: #dc3545;
+  padding: 5px;
+}
+
+button.pdf {
+  background-color: #28a745;
+  padding: 5px;
+}
