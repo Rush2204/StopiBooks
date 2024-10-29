@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, FormEvent, useEffect } from "react";
+import { useState, FormEvent, useEffect, useRef } from "react";
 import NewAuthor from "./NewAuthor";
 
 export default function SidebarSection() {
@@ -12,6 +12,8 @@ export default function SidebarSection() {
   const [authors, setAuthors] = useState<any>();
   const [genres, setGenres] = useState<any>();
   const [popupVisibility, setPopupVisibility] = useState<boolean>(false);
+  const voiceButtonRef = useRef<HTMLButtonElement | null>(null);
+  const editedContentRef = useRef<string>("");
 
   useEffect(() => {
     const fetchAuthors = async () => {
@@ -65,10 +67,52 @@ export default function SidebarSection() {
       setBookTitle("");
       setBookDate("");
       setBookAuthor("");
-      setBookGenre("Selecciona un género");
+      setBookGenre("");
     } else {
       console.error("Error al agregar el libro");
     }
+  };
+
+  const writeWithVoice = () => {
+    if (
+      !("webkitSpeechRecognition" in window) &&
+      !("SpeechRecognition" in window)
+    ) {
+      alert("Tu navegador no soporta reconocimiento de voz.");
+      return;
+    }
+
+    const recognition = new (window.SpeechRecognition ||
+      window.webkitSpeechRecognition)();
+    recognition.lang = "es-ES";
+    recognition.interimResults = false; // Solo resultados finales
+    recognition.maxAlternatives = 1;
+
+    // Indicar que la grabación está en curso
+    if (voiceButtonRef.current) {
+      voiceButtonRef.current.classList.add("active");
+      voiceButtonRef.current.textContent = "🎤 Grabando...";
+    }
+
+    recognition.start();
+
+    recognition.onresult = (event: SpeechRecognitionEvent) => {
+      console.log("event ", event);
+      const transcript = event.results[0][0].transcript;
+      setBookTitle(transcript);
+    };
+
+    recognition.onerror = (event: SpeechRecognitionError) => {
+      alert("Error en reconocimiento de voz: " + event.error);
+    };
+
+    recognition.onend = () => {
+      // Volver el botón a su estado normal
+      if (voiceButtonRef.current) {
+        voiceButtonRef.current.classList.remove("active");
+        voiceButtonRef.current.textContent = "🎤 Hablar";
+      }
+    };
   };
 
   const openPopup = () => {
@@ -84,7 +128,7 @@ export default function SidebarSection() {
       <h2>Agregar Libro</h2>
       <form id="bookForm" onSubmit={handleSubmit}>
         <div className="htmlForm-group">
-          <button id="voiceButton" className="vbutton">
+          <button id="voiceButton" className="vbutton" onClick={writeWithVoice}>
             🎤 Hablar
           </button>
         </div>
