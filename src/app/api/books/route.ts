@@ -60,8 +60,10 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
 export async function PUT(req: NextRequest): Promise<NextResponse> {
   try {
+    console.log("Trigerred");
     const prisma = new PrismaClient();
     const { id, title, summary, authorId, genreId } = await req.json(); // Get the data from the request
+    console.log("request", req.json());
 
     // Update the book by its id
     const updatedBook = await prisma.book.update({
