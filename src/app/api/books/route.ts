@@ -1,13 +1,47 @@
 import { PrismaClient } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(): Promise<NextResponse> {
+export async function GET(req: NextRequest): Promise<NextResponse> {
   try {
     const prisma = new PrismaClient();
+
+    const { searchParams } = new URL(req.url);
+    const title = searchParams.get("title") || undefined; // Título a buscar
+    const startDate = searchParams.get("startDate")
+      ? new Date(searchParams.get("startDate")!)
+      : undefined; // Fecha de inicio
+    const endDate = searchParams.get("endDate")
+      ? new Date(searchParams.get("endDate")!)
+      : undefined; // Fecha de fin
+
+    const where = {
+      ...(title && { title: { contains: title, mode: "insensitive" } }), // Filtrar por título (case insensitive)
+      ...(startDate && { publishedAt: { gte: new Date(startDate) } }), // Fecha de inicio
+      ...(endDate && { publishedAt: { lte: new Date(endDate) } }), // Fecha de fin
+    };
+
     const books = await prisma.book.findMany({
+      where: {
+        ...(title && {
+          title: {
+            contains: title,
+            mode: "insensitive" as const, // Aseguramos que mode sea compatible con QueryMode
+          },
+        }),
+        ...(startDate && {
+          publishedAt: {
+            gte: startDate,
+          },
+        }),
+        ...(endDate && {
+          publishedAt: {
+            lte: endDate,
+          },
+        }),
+      },
       include: {
-        author: true, // Include the related author
-        genre: true, // Include the related genre (if needed)
+        author: true,
+        genre: true,
       },
     });
     return NextResponse.json(books, { status: 200 });
@@ -62,17 +96,19 @@ export async function PUT(req: NextRequest): Promise<NextResponse> {
   try {
     console.log("Trigerred");
     const prisma = new PrismaClient();
-    const { id, title, summary, authorId, genreId } = await req.json(); // Get the data from the request
+    const { id, title, summary, publishedAt, authorId, genreId } =
+      await req.json(); // Get the data from the request
     console.log("request", req.json());
 
     // Update the book by its id
     const updatedBook = await prisma.book.update({
       where: { id: id }, // Find the book by its id
       data: {
-        title: title, // Update the title
-        summary: summary,
-        authorId: authorId, // Update the authorId
-        genreId: genreId, // Update the genreId
+        title, // Update the title
+        summary,
+        publishedAt,
+        authorId, // Update the authorId
+        genreId, // Update the genreId
       },
     });
 
