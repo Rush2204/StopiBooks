@@ -262,10 +262,6 @@ export default function EditBook({ visibility, close, bookId }: any) {
               >
                 🎤 Voz
               </button>
-              <form id="imagehtmlForm">
-                <button type="submit">Imagen a texto</button>
-                <input type="file" id="imageInput" accept="image/*" required />
-              </form>
             </div>
           </form>
         </div>

@@ -97,7 +97,6 @@ export default function SidebarSection() {
     recognition.start();
 
     recognition.onresult = (event: SpeechRecognitionEvent) => {
-      console.log("event ", event);
       const transcript = event.results[0][0].transcript;
       setBookTitle(transcript);
     };

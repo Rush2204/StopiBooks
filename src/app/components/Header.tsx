@@ -1,36 +1,19 @@
 "use client";
-import { useState, useEffect } from "react";
 
-export default function Header() {
-  const [params, setParams] = useState<any>([]);
-  const [titleFilter, setTitleFilter] = useState<string>("");
-  const [startDateFilter, setStartDateFilter] = useState<string>("");
-  const [endDateFilter, setEndDateFilter] = useState<string>("");
-
-  const fetchBooks = async () => {
-    const queryParams = new URLSearchParams();
-    if (titleFilter) queryParams.append("title", titleFilter);
-    if (startDateFilter) queryParams.append("startDate", startDateFilter);
-    if (endDateFilter) queryParams.append("endDate", endDateFilter);
-
-    try {
-      const response = await fetch(`/api/books?${queryParams.toString()}`);
-      const data = await response.json();
-      setParams(data);
-    } catch (error) {
-      console.error("Error fetching books:", error);
-    }
-  };
-
-  useEffect(() => {
-    fetchBooks();
-  }, [titleFilter, startDateFilter, endDateFilter]);
-
+export default function Header({
+  params,
+  titleFilter,
+  startDateFilter,
+  endDateFilter,
+  setTitleFilter,
+  setStartDateFilter,
+  setEndDateFilter,
+}: any) {
   return (
     <header id="header">
       <form id="searchForm">
         <div>
-          <img src="Media/logo.png" alt="logo" />
+          <img src="logo.png" alt="logo" />
         </div>
         <div className="form-group">
           <label htmlFor="searchTitle">Buscar:</label>
