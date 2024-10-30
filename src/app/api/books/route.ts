@@ -15,9 +15,28 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
       : undefined; // Fecha de fin
 
     const where = {
-      ...(title && { title: { contains: title, mode: "insensitive" } }), // Filtrar por título (case insensitive)
-      ...(startDate && { publishedAt: { gte: new Date(startDate) } }), // Fecha de inicio
-      ...(endDate && { publishedAt: { lte: new Date(endDate) } }), // Fecha de fin
+      ...(title && {
+        title: { contains: title, mode: "insensitive" as const },
+      }),
+      ...(startDate &&
+        endDate && {
+          publishedAt: {
+            gte: startDate,
+            lte: endDate,
+          },
+        }),
+      ...(startDate &&
+        !endDate && {
+          publishedAt: {
+            gte: startDate,
+          },
+        }),
+      ...(!startDate &&
+        endDate && {
+          publishedAt: {
+            lte: endDate,
+          },
+        }),
     };
 
     const books = await prisma.book.findMany({
