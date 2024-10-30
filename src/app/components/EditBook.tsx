@@ -4,7 +4,7 @@ import { useState, FormEvent, useEffect, useRef } from "react";
 
 export default function EditBook({ visibility, close, bookId }: any) {
   const [bookName, setBookName] = useState<string>("");
-  const [bookDate, setBookDate] = useState<string>("");
+  const [bookDate, setBookDate] = useState<Date | null>(null);
   const [bookAuthor, setBookAuthor] = useState<string>("");
   const [bookGenre, setBookGenre] = useState<string>("");
   const [bookSummary, setBookSummary] = useState<string>("");
@@ -12,10 +12,13 @@ export default function EditBook({ visibility, close, bookId }: any) {
   const [genreId, setGenreId] = useState<string>("");
   const [authors, setAuthors] = useState<any>();
   const [genres, setGenres] = useState<any>();
+  const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([]);
   const voiceButtonRef = useRef<HTMLButtonElement | null>(null);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+
+    console.log("Book date before submit", bookDate);
 
     const res = await fetch(`/api/books`, {
       method: "PUT",
@@ -31,10 +34,9 @@ export default function EditBook({ visibility, close, bookId }: any) {
     });
 
     if (res.ok) {
-      console.log("libro agregado exitosamente");
       // Reinicia el formulario si deseas limpiar los campos después de agregar el autor
       setBookName("");
-      setBookDate("");
+      setBookDate(null);
       setBookAuthor("");
       setBookGenre("");
       setBookSummary("");
@@ -46,7 +48,6 @@ export default function EditBook({ visibility, close, bookId }: any) {
 
   useEffect(() => {
     const fetchBook = async () => {
-      console.log("bookID", bookId);
       try {
         const response = await fetch(`/api/books/${bookId}`);
         if (!response.ok) {
@@ -54,8 +55,10 @@ export default function EditBook({ visibility, close, bookId }: any) {
         }
         const data = await response.json();
         setBookName(data.title);
-        console.log("Book name", data.title);
-        setBookDate(formatDate(data.publishedAt));
+        const publishedAtDate = data.publishedAt
+          ? new Date(data.publishedAt)
+          : null;
+        setBookDate(publishedAtDate);
         setAuthorId(data.authorId);
         setGenreId(data.genreId);
         setBookAuthor(data.author?.name || "");
@@ -92,15 +95,20 @@ export default function EditBook({ visibility, close, bookId }: any) {
       }
     };
 
+    const loadVoices = () => {
+      const availableVoices = window.speechSynthesis.getVoices();
+      setVoices(availableVoices);
+    };
+
+    window.speechSynthesis.onvoiceschanged = loadVoices;
+
+    // Carga las voces si ya están disponibles
+    loadVoices();
+
     fetchAuthors();
     fetchGenres();
     fetchBook();
   }, [bookId]);
-
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString("es-ES"); // formato día/mes/año en español
-  };
 
   const writeWithVoice = () => {
     if (
@@ -126,7 +134,6 @@ export default function EditBook({ visibility, close, bookId }: any) {
     recognition.start();
 
     recognition.onresult = (event: SpeechRecognitionEvent) => {
-      console.log("event ", event);
       const transcript = event.results[0][0].transcript;
       setBookSummary(transcript);
     };
@@ -142,6 +149,12 @@ export default function EditBook({ visibility, close, bookId }: any) {
         voiceButtonRef.current.textContent = "🎤 Hablar";
       }
     };
+  };
+
+  const readText = () => {
+    const utterance = new SpeechSynthesisUtterance(bookSummary);
+    utterance.lang = "es-ES";
+    window.speechSynthesis.speak(utterance);
   };
 
   return (
@@ -166,10 +179,12 @@ export default function EditBook({ visibility, close, bookId }: any) {
             <div className="htmlForm-group">
               <label htmlFor="editDate">Fecha:</label>
               <input
-                type="text"
+                type="date"
                 id="editDate"
-                value={bookDate}
-                onChange={(e) => setBookDate(e.target.value)}
+                value={bookDate ? bookDate.toISOString().split("T")[0] : ""}
+                onChange={(e) =>
+                  setBookDate(e.target.value ? new Date(e.target.value) : null)
+                }
                 required
               />
             </div>
@@ -179,7 +194,7 @@ export default function EditBook({ visibility, close, bookId }: any) {
                 id="bookAuthor"
                 required
                 value={authorId}
-                onChange={(e) => setBookAuthor(e.target.value)}
+                onChange={(e) => setAuthorId(e.target.value)}
               >
                 <option value="" disabled>
                   Selecciona un autor
@@ -202,7 +217,7 @@ export default function EditBook({ visibility, close, bookId }: any) {
                 id="bookGenre"
                 required
                 value={genreId}
-                onChange={(e) => setBookGenre(e.target.value)}
+                onChange={(e) => setGenreId(e.target.value)}
               >
                 <option value="" disabled>
                   Selecciona un género
@@ -236,7 +251,9 @@ export default function EditBook({ visibility, close, bookId }: any) {
               <button id="cancelButton" onClick={close}>
                 Cancelar
               </button>
-              <button id="readButton">Leer Texto</button>
+              <button id="readButton" type="button" onClick={readText}>
+                Leer Texto
+              </button>
               <button
                 id="voiceButton2"
                 className="vbutton"
