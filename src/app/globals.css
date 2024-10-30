@@ -3,14 +3,14 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f5f0e1; /* Café claro */
+  --foreground: #4e3b31; /* Café oscuro */
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #3b2a22; /* Café más oscuro */
+    --foreground: #ede0d4; /* Blanco sucio */
   }
 }
 
@@ -39,13 +39,13 @@ button {
   justify-content: space-between;
   align-items: center;
   padding: 20px;
-  background-color: #ffffff;
-  border-bottom: 2px solid #ccc;
+  background-color: #e8d5c4; /* Café claro más suave */
+  border-bottom: 2px solid #b69b8a; /* Café medio */
 }
 
 #searchForm img {
-  width: 50px;
-  height: 50px;
+  width: 200px;
+  height: 90px;
 }
 
 #searchForm .form-group {
@@ -57,31 +57,17 @@ button {
 #searchForm input,
 #searchForm select {
   padding: 10px;
-  border: 1px solid #ccc;
+  border: 1px solid #b69b8a; /* Café medio */
   border-radius: 5px;
   margin-top: 5px;
-}
-
-#searchButton {
-  padding: 10px 15px;
-  background-color: #28a745;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-#searchButton:hover {
-  background-color: #218838;
 }
 
 /* Recent searches form */
 #recentForm {
   margin-top: 20px;
   padding: 10px;
-  background-color: #f9f9f9;
-  border: 1px solid #ddd;
+  background-color: #f2e8d5; /* Café más claro */
+  border: 1px solid #d1b7a5; /* Café claro */
 }
 
 #recentForm h2 {
@@ -91,7 +77,7 @@ button {
 
 #recentSearches {
   padding: 10px;
-  background-color: #ffffff;
+  background-color: #ffffff; /* Blanco */
   border: 1px solid #ccc;
   border-radius: 5px;
 }
@@ -100,8 +86,8 @@ button {
 #crud {
   display: flex;
   padding: 20px;
-  background-color: #ffffff;
-  border: 1px solid #ddd;
+  background-color: #f9f5f0; /* Café muy claro */
+  border: 1px solid #d1b7a5; /* Café claro */
   border-radius: 5px;
   margin-top: 20px;
 }
@@ -113,7 +99,7 @@ button {
 
 .sectionagregar {
   padding: 50px;
-  background-color: #f4f4f4;
+  background-color: #e8d5c4; /* Café claro más suave */
   border-radius: 5px;
   margin-bottom: 20px;
 }
@@ -132,43 +118,46 @@ button {
 .sectionagregar select {
   width: 115%;
   padding: 10px;
-  border: 1px solid #ccc;
+  border: 1px solid #b69b8a; /* Café medio */
   border-radius: 5px;
   margin-top: 5px;
 }
 
 .vbutton {
-  background-color: #007bff;
+  background-color: #6f4c3e; /* Café medio */
   color: white;
   padding: 10px;
   border: none;
-  border-radius: 5px;
+  border-radius: 10px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  margin-left: 3px;
 }
 
 .vbutton:hover {
-  background-color: #0056b3;
+  background-color: #5b3a30; /* Café oscuro */
 }
 
 #addButton {
   padding: 10px 15px;
-  background-color: #28a745;
+  background-color: #8c7352; /* Café claro más oscuro */
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  margin-top: 5px;
 }
 
 #addButton:hover {
-  background-color: #218838;
+  background-color: #7a6348; /* Café oscuro */
 }
 
 .sectionregistros {
   width: 100%;
   margin: 5px;
 }
+
 /* Table styling */
 #bookTable {
   width: 100%;
@@ -178,29 +167,33 @@ button {
 
 #bookTable th,
 #bookTable td {
-  border: 1px solid #ddd;
+  border: 1px solid #d1b7a5; /* Café claro */
   padding: 8px;
-  text-align: left;
+  text-align: center;
 }
 
 #bookTable th {
-  background-color: #4caf50;
+  background-color: #8c7352; /* Café claro más oscuro */
   color: white;
 }
 
 /* Action buttons (Edit, Delete, PDF) */
 button.edit {
-  background-color: #007bff;
+  background-color: #6f4c3e; /* Café medio */
   padding: 5px;
+  width: 30%;
+  margin-right: 2px;
 }
 
 button.delete {
-  background-color: #dc3545;
+  background-color: #dc3545; /* Rojo para eliminar */
   padding: 5px;
+  width: 40%;
+  margin-left: 2px;
 }
 
 button.pdf {
-  background-color: #28a745;
+  background-color: #8c7352; /* Café claro más oscuro */
   padding: 5px;
 }
 
@@ -217,7 +210,7 @@ button.pdf {
 }
 
 .modal-content {
-  background-color: white;
+  background-color: #ffffff; /* Blanco */
   margin: 15% auto;
   padding: 20px;
   width: 90%; /* Cambiado a 90% para pantallas más pequeñas */
@@ -230,7 +223,7 @@ button.pdf {
 .modal textarea {
   width: 100%;
   padding: 10px;
-  border: 1px solid #ccc;
+  border: 1px solid #b69b8a; /* Café medio */
   border-radius: 5px;
   margin-top: 5px;
 }
@@ -252,25 +245,26 @@ button.pdf {
 /* Estilos para los botones */
 button,
 input[type="submit"] {
-  padding: 10px 10px;
-  background-color: #4caf50; /* Color por defecto */
+  padding: 10px 19px;
+  background-color: #8c7352; /* Café claro más oscuro */
   color: white;
-  border: 10px;
+  border: none;
   border-radius: 10px;
   cursor: pointer;
   font-size: 16px;
   transition: background-color 0.3s; /* Transición suave */
+  margin-left: 3px;
 }
 
 button:hover,
 input[type="submit"]:hover {
-  background-color: #45a049; /* Color al pasar el mouse */
+  background-color: #7a6348; /* Café oscuro */
 }
 
 /* Espaciado y alineación */
 input[type="text"]:focus,
 input[type="date"]:focus,
 select:focus {
-  border-color: #4caf50;
+  border-color: #8c7352; /* Café claro más oscuro */
   outline: none;
 }
